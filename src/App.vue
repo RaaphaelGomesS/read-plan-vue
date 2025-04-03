@@ -1,18 +1,16 @@
 <template>
-  <BookList/>
+  <NavBar></NavBar>
+  <router-view />
 </template>
 
 <script>
-import BookList from './components/BookList.vue'
+import NavBar from './components/NavBar.vue';
 
 export default {
-  name: 'App',
   components: {
-    BookList
+    NavBar
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

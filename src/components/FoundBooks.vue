@@ -6,7 +6,7 @@
 
 <script>
 
-import Search-comp from "/Search.vue"
+import Search from './Search.vue';
 
 export default {
   name: "Find-books",
