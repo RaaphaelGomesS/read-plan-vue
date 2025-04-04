@@ -19,3 +19,26 @@ export function loadBooks() {
     }
   });
 }
+
+export function saveFinishedBooks(books) {
+  return new Promise((resolve, reject) => {
+    try {
+      localStorage.setItem("finishedBooks", JSON.stringify(books));
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export function loadFinishedBooks() {
+  return new Promise((resolve, reject) => {
+    try {
+      const data = localStorage.getItem("finishedBooks");
+      const parsed = data ? JSON.parse(data) : [];
+      resolve(parsed.filter(book => book && book.id));
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

@@ -1,8 +1,9 @@
 <template>
     <div>
         <Search @book-searched="addSearched" />
-        <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
         <button @click="saveSelectedBooks">Salvar</button>
+        <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
+    
     </div>
 </template>
 

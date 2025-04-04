@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Crie seus planos de leitura</h2>
+        <h2>Crie seu plano de leitura</h2>
     </div>
 </template>
 
