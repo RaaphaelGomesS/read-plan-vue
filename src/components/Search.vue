@@ -1,15 +1,17 @@
 <template>
-  <div>
+  <div class="container">
     <h2>{{ adaptativeText }}</h2>
-    <div>
-      <input type="radio" id="book" value="book" v-model="selectedOption" />
-      <label for="book">Livro</label>
+    <div class="search">
+      <div class="radioInput">
+        <input type="radio" id="book" value="book" v-model="selectedOption" />
+        <label for="book">Livro</label>
 
-      <input type="radio" id="author" value="author" v-model="selectedOption" />
-      <label for="author">Autor/a</label>
+        <input type="radio" id="author" value="author" v-model="selectedOption" />
+        <label for="author">Autor/a</label>
+      </div>
 
-      <input type="text" v-model="inputText" />
-      <button @click="search">Pesquisar</button>
+      <input class="textInput" type="text" v-model="inputText" />
+      <button class="button" @click="search">Pesquisar</button>
     </div>
   </div>
 </template>

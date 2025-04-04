@@ -3,7 +3,6 @@
         <Search @book-searched="addSearched" />
         <button @click="saveSelectedBooks">Salvar</button>
         <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
-    
     </div>
 </template>
 

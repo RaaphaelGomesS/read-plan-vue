@@ -1,46 +1,26 @@
 <template>
-    <nav class="navbar">
-      <ul class="nav-list">
-        <li>
-          <router-link to="/">Inicial</router-link>
-        </li>
-        <li>
-          <router-link to="/search">Buscar</router-link>
-        </li>
-        <li>
-          <router-link to="/list">Lista de livros</router-link>
-        </li>
-      </ul>
-    </nav>
-  </template>
-  
-  <script>
-  export default {
-    name: "NavBar"
-  };
-  </script>
-  
-  <style scoped>
-  .navbar {
-    background-color: #333;
-    padding: 10px;
-  }
-  
-  .nav-list {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-list li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .nav-list li a:hover {
-    text-decoration: underline;
-  }
-  </style>
+  <v-app-bar fixed color="#5C5470">
+
+    <v-img src="/book-shelf.png" max-height="40" max-width="40" contain class="ml-5"></v-img>
+
+    <v-spacer></v-spacer>
+
+    <v-tabs>
+      <v-tab to="/">Inicial</v-tab>
+      <v-tab to="/search">Buscar</v-tab>
+      <v-tab to="/list">Lista de livros</v-tab>
+    </v-tabs>
+  </v-app-bar>
+</template>
+
+<script>
+export default {
+  name: "NavBar"
+};
+</script>
+
+<style scoped>
+.v-tabs-bar {
+  float: left !important;
+}
+</style>
