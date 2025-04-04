@@ -10,7 +10,7 @@ export async function searchBook(value) {
             publisher: book.volumeInfo.publisher,
             categorie: book.volumeInfo.categories,
             pages: book.volumeInfo.pageCount,
-            image: book.volumeInfo.imageLinks.thumbnail
+            image: book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ""
         }))
     } catch (error) {
         console.error("Error ao buscar livro: ", error);
@@ -28,12 +28,10 @@ export async function searchAuthor(value) {
             publisher: book.volumeInfo.publisher,
             categorie: book.volumeInfo.categories,
             pages: book.volumeInfo.pageCount,
-            image: book.volumeInfo.imageLinks.thumbnail
+            image: book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ""
         }))
     } catch (error) {
         console.error("Error ao buscar livros do autor: ", error);
         return [];
     }
 }
-
-searchBook("Crime e castigo").then(book => console.log(book));
