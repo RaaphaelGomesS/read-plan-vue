@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Search from '@/components/Search.vue'
+import SearchPlanner from '@/components/SearchPlanner.vue';
 import BookList from '@/components/BookList.vue';
 import Home from '@/components/Home.vue';
 
@@ -11,8 +11,8 @@ const routes = [
   },
   {
     path: '/search',
-    name: 'Search',
-    component: Search
+    name: 'SearchPlanner',
+    component: SearchPlanner
   },
   {
     path: '/list',

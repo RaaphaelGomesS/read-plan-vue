@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1>{{ adaptativeText }}</h1>
+    <h2>{{ adaptativeText }}</h2>
     <div>
-      <select v-model="selectedOption" >
-        <option disabled value="select">Selecione uma opção</option>
-        <option value="book">Livro</option>
-        <option value="author">Autor/a</option>
-      </select>
+      <input type="radio" id="book" value="book" v-model="selectedOption" />
+      <label for="book">Livro</label>
+
+      <input type="radio" id="author" value="author" v-model="selectedOption" />
+      <label for="author">Autor/a</label>
+
       <input type="text" v-model="inputText" />
       <button @click="search">Pesquisar</button>
     </div>
@@ -15,7 +16,7 @@
 
 <script>
 
-import { searchBook, searchAuthor } from '@/searchBook';
+import { searchBook, searchAuthor } from '@/service/searchBook';
 
 export default {
   name: "Search-comp",
@@ -44,11 +45,10 @@ export default {
   methods: {
     async search() {
       if (this.inputText.trim() === "") return;
-          console.log(this.inputText)
+
       if (this.selectedOption == "book") {
         try {
           const bookData = await searchBook(this.inputText);
-          console.log(bookData);
           this.$emit("book-searched", bookData);
         } catch (error) {
           console.error("Erro ao buscar o livro:", error);
@@ -56,7 +56,6 @@ export default {
       } else {
         try {
           const bookData = await searchAuthor(this.inputText);
-          console.log(bookData);
           this.$emit("book-searched", bookData);
         } catch (error) {
           console.error("Erro ao buscar o livro:", error);
