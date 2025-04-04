@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar fixed color="#5C5470">
+  <v-app-bar fixed color="#352F44">
 
     <v-img src="/book-shelf.png" max-height="40" max-width="40" contain class="ml-5"></v-img>
 
@@ -19,8 +19,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.v-tabs-bar {
-  float: left !important;
-}
-</style>
+<style scoped></style>

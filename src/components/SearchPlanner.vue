@@ -1,7 +1,6 @@
 <template>
     <div>
-        <Search @book-searched="addSearched" />
-        <button @click="saveSelectedBooks">Salvar</button>
+        <Search @book-searched="addSearched" @select="saveSelectedBooks" />
         <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
     </div>
 </template>
@@ -35,12 +34,14 @@ export default {
             this.selectedBooks = selected;
         },
 
-        async saveSelectedBooks() {
-            try {
-                await saveBooks(this.selectedBooks);
-                alert("Livros salvos com sucesso!");
-            } catch (error) {
-                console.error("Erro ao salvar os livros:", error);
+        async saveSelectedBooks(valor) {
+            if (valor) {
+                try {
+                    await saveBooks(this.selectedBooks);
+                    alert("Livros salvos com sucesso!");
+                } catch (error) {
+                    console.error("Erro ao salvar os livros:", error);
+                }
             }
         }
     }

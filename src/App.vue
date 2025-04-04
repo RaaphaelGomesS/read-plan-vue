@@ -17,4 +17,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+
+.v-main {
+  background-color: #F6F0F0;
+}
+
+</style>

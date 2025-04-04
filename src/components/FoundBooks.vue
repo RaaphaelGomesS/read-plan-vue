@@ -1,18 +1,19 @@
 <template>
   <div>
-    <ul class="bookList">
-      <li v-for="book in books" :key="book.id" :class="{ selected: selectedBooks.includes(book) }"
-        @click="toggleSelection(book)">
-        <h3>{{ book.title }}</h3>
-        <p>{{ book.authors }}</p>
-        <p>{{ book.publisher }}</p>
-        <p>{{ book.categories }}</p>
-        <p>{{ book.pages }}</p>
-        <div>
-          <img :src="book.image" :alt="book.title" class="book-thumbnail" />
-        </div>
-      </li>
-    </ul>
+    <v-row>
+      <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4">
+        <v-card :class="{ selected: selectedBooks.includes(book) }" @click="toggleSelection(book)">
+          <v-card-title>{{ book.title }}</v-card-title>
+          <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+          <v-card-text>
+            <p>{{ book.publisher }}</p>
+            <p>{{ book.categories }}</p>
+            <p>{{ book.pages }}</p>
+          </v-card-text>
+          <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -47,12 +48,18 @@ export default {
 </script>
 
 <style scoped>
-
-.bookList {
-  
-}
-
 .selected {
   background-color: #def;
 }
+
+.v-card-text {
+  padding: 10px;
+}
+
+.book-thumbnail {
+  width: 100px;
+  margin-left: 10px;
+  padding: 20px;
+}
+
 </style>
