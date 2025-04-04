@@ -127,7 +127,7 @@ export default {
 }
 
 .title-message {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .book-thumbnail {
