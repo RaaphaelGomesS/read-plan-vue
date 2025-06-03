@@ -1,17 +1,14 @@
 <template>
   <div>
     <Search @save-selected="saveSelectedBooks" @book-searched="addSearched" />
-    <FoundBooks
-      :books="searchedBooks"
-      @update-selection="selectionUpdate"
-    />
+    <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
   </div>
 </template>
 
 <script>
 import Search from './Search.vue';
 import FoundBooks from './FoundBooks.vue';
-import { saveBooks } from '@/service/asyncStorage';
+import { saveBooks } from '@/service/connectAPI';
 
 export default {
   name: 'SearchPlanner',

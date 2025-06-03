@@ -22,25 +22,25 @@
     <div v-if="tab === 'planned'">
       <div v-if="books.length > 0">
         <draggable v-model="books" item-key="id" tag="v-row" @end="onDragEnd">
-          <template #item="{ element: book, index }">
+          <template #item="{ element: book }">
             <v-col :key="book.id" cols="12" sm="6" md="4">
               <v-card class="ma-2 pa-2">
 
                 <v-card-title>{{ book.title }}</v-card-title>
-                <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+                <v-card-subtitle>{{ book.author }}</v-card-subtitle>
 
-                <v-card-text>
+                <v-card-text class="ma-2 pa-2">
                   <p>{{ book.publisher }}</p>
                   <p>{{ book.categories }}</p>
                   <p>{{ book.pages }}</p>
-                  <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
+                  <v-img :src="book.img" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-btn color="error" @click="removeBook(index)">
+                  <v-btn color="error" @click="removeBook(book.id)">
                     Remover
                   </v-btn>
-                  <v-btn color="success" @click="finishBook(index)">
+                  <v-btn color="success" @click="finishBook(book.id)">
                     Concluído
                   </v-btn>
                 </v-card-actions>
@@ -63,21 +63,21 @@
     <div v-if="tab === 'finished'">
       <div v-if="finishedBooks.length > 0">
         <v-row>
-          <v-col v-for="(book, index) in finishedBooks" :key="book.id" cols="12" sm="6" md="4">
+          <v-col v-for="(book) in finishedBooks" :key="book.id" cols="12" sm="6" md="4">
             <v-card class="ma-2 pa-2">
 
               <v-card-title>{{ book.title }}</v-card-title>
-              <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+              <v-card-subtitle>{{ book.author }}</v-card-subtitle>
 
-              <v-card-text>
+              <v-card-text class="ma-2 pa-2">
                 <p>{{ book.publisher }}</p>
                 <p>{{ book.categories }}</p>
                 <p>{{ book.pages }}</p>
-                <v-img :src="book.image" :alt="book.title" class="book-thumbnail" contain></v-img>
+                <v-img :src="book.img" :alt="book.title" class="book-thumbnail" contain></v-img>
               </v-card-text>
 
               <v-card-actions>
-                <v-btn color="primary" @click="comeback(index)">
+                <v-btn color="primary" @click="unfinish(book.id)">
                   Voltar
                 </v-btn>
               </v-card-actions>
@@ -104,8 +104,10 @@ import {
   loadBooks,
   loadFinishedBooks,
   saveBooks,
-  saveFinishedBooks
-} from '@/service/asyncStorage'
+  deleteBook,
+  finishBook,
+  unfinishBook
+} from '@/service/connectAPI'
 
 export default {
   name: 'SelectedBooks',
@@ -122,36 +124,30 @@ export default {
   methods: {
     async fetchBooks() {
       try {
-        this.books = await loadBooks()
-        this.finishedBooks = await loadFinishedBooks()
+        this.books = await loadBooks();
+        this.finishedBooks = await loadFinishedBooks();
       } catch (error) {
-        console.error('Erro ao carregar os livros:', error)
+        console.error('Erro ao carregar os livros:', error);
       }
     },
 
-    async removeBook(index) {
-      this.books.splice(index, 1)
-      await saveBooks(this.books)
+    async removeBook(id) {
+      console.log(id);
+      await deleteBook(id);
     },
 
-    async finishBook(index) {
-      const finishedBook = this.books.splice(index, 1)[0]
-      await saveBooks(this.books)
-
-      this.finishedBooks.push(finishedBook)
-      await saveFinishedBooks(this.finishedBooks)
+    async finishBook(id) {
+      console.log(id);
+      await finishBook(id);
     },
 
-    async comeback(index) {
-      const returnedBook = this.finishedBooks.splice(index, 1)[0]
-      await saveFinishedBooks(this.finishedBooks)
-
-      this.books.push(returnedBook)
-      await saveBooks(this.books)
+    async unfinish(id) {
+      console.log(id);
+      await unfinishBook(id);
     },
     async onDragEnd() {
       try {
-        await saveBooks(this.books)
+        await saveBooks(this.books);
       } catch (error) {
         console.error('Erro ao salvar nova ordem:', error)
       }
@@ -159,7 +155,7 @@ export default {
   },
 
   mounted() {
-    this.fetchBooks()
+    this.fetchBooks();
   }
 }
 </script>
