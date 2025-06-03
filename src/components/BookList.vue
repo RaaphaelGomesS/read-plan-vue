@@ -21,28 +21,34 @@
 
     <div v-if="tab === 'planned'">
       <div v-if="books.length > 0">
-        <v-row>
-          <v-col v-for="(book, index) in books" :key="book.id" cols="12" sm="6" md="4">
-            <v-card class="ma-2 pa-2">
+        <draggable v-model="books" item-key="id" tag="v-row" @end="onDragEnd">
+          <template #item="{ element: book, index }">
+            <v-col :key="book.id" cols="12" sm="6" md="4">
+              <v-card class="ma-2 pa-2">
 
-              <v-card-title>{{ book.title }}</v-card-title>
-              <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+                <v-card-title>{{ book.title }}</v-card-title>
+                <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
 
-              <v-card-text>
-                <p>{{ book.publisher }}</p>
-                <p>{{ book.categories }}</p>
-                <p>{{ book.pages }}</p>
-                <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
-              </v-card-text>
+                <v-card-text>
+                  <p>{{ book.publisher }}</p>
+                  <p>{{ book.categories }}</p>
+                  <p>{{ book.pages }}</p>
+                  <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
+                </v-card-text>
 
-              <v-card-actions>
-                <v-btn color="error" @click="removeBook(index)">Remover</v-btn>
-                <v-btn color="success" @click="finishBook(index)">Concluído</v-btn>
-              </v-card-actions>
+                <v-card-actions>
+                  <v-btn color="error" @click="removeBook(index)">
+                    Remover
+                  </v-btn>
+                  <v-btn color="success" @click="finishBook(index)">
+                    Concluído
+                  </v-btn>
+                </v-card-actions>
 
-            </v-card>
-          </v-col>
-        </v-row>
+              </v-card>
+            </v-col>
+          </template>
+        </draggable>
       </div>
 
       <div v-else>
@@ -71,7 +77,9 @@
               </v-card-text>
 
               <v-card-actions>
-                <v-btn color="primary" @click="comeback(index)">Voltar</v-btn>
+                <v-btn color="primary" @click="comeback(index)">
+                  Voltar
+                </v-btn>
               </v-card-actions>
 
             </v-card>
@@ -91,69 +99,82 @@
 </template>
 
 <script>
-
-import { loadBooks, loadFinishedBooks, saveBooks, saveFinishedBooks } from '@/service/asyncStorage';
+import draggable from 'vuedraggable'
+import {
+  loadBooks,
+  loadFinishedBooks,
+  saveBooks,
+  saveFinishedBooks
+} from '@/service/asyncStorage'
 
 export default {
-  name: "SelectedBooks",
+  name: 'SelectedBooks',
+  components: {
+    draggable
+  },
   data() {
-
     return {
-      tab: "planned",
+      tab: 'planned',
       books: [],
       finishedBooks: []
-    };
+    }
   },
-
   methods: {
     async fetchBooks() {
       try {
-        this.books = await loadBooks();
-        this.finishedBooks = await loadFinishedBooks();
+        this.books = await loadBooks()
+        this.finishedBooks = await loadFinishedBooks()
       } catch (error) {
-        console.error("Erro ao carregar os livros:", error);
+        console.error('Erro ao carregar os livros:', error)
       }
     },
 
     async removeBook(index) {
-      this.books.splice(index, 1);
-      await saveBooks(this.books);
+      this.books.splice(index, 1)
+      await saveBooks(this.books)
     },
 
     async finishBook(index) {
-      const finishedBook = this.books.splice(index, 1)[0];
-      await saveBooks(this.books);
+      const finishedBook = this.books.splice(index, 1)[0]
+      await saveBooks(this.books)
 
-      this.finishedBooks.push(finishedBook);
-      await saveFinishedBooks(this.finishedBooks);
+      this.finishedBooks.push(finishedBook)
+      await saveFinishedBooks(this.finishedBooks)
     },
 
     async comeback(index) {
-      const returnedBook = this.finishedBooks.splice(index, 1)[0];
-      await saveFinishedBooks(this.finishedBooks);
+      const returnedBook = this.finishedBooks.splice(index, 1)[0]
+      await saveFinishedBooks(this.finishedBooks)
 
-      this.books.push(returnedBook);
-      await saveBooks(this.books);
+      this.books.push(returnedBook)
+      await saveBooks(this.books)
+    },
+    async onDragEnd() {
+      try {
+        await saveBooks(this.books)
+      } catch (error) {
+        console.error('Erro ao salvar nova ordem:', error)
+      }
     }
   },
 
   mounted() {
-    this.fetchBooks();
+    this.fetchBooks()
   }
-};
+}
 </script>
 
 <style scoped>
 .active {
-  background-color: #352F44 !important;
+  background-color: #352f44 !important;
   color: white !important;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
   transition: 0.3s;
 }
 
 .inactive {
-  background-color: #DBD8E3 !important;
-  color: #352F44 !important;
+  background-color: #dbd8e3 !important;
+  color: #352f44 !important;
   box-shadow: none;
   transition: 0.3s;
 }
