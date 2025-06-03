@@ -1,51 +1,46 @@
 <template>
-    <div>
-        <Search @book-searched="addSearched" @select="saveSelectedBooks" />
-        <FoundBooks :books="searchedBooks" @update-selection="selectionUpdate" />
-    </div>
+  <div>
+    <Search @save-selected="saveSelectedBooks" @book-searched="addSearched" />
+    <FoundBooks
+      :books="searchedBooks"
+      @update-selection="selectionUpdate"
+    />
+  </div>
 </template>
 
 <script>
-
 import Search from './Search.vue';
 import FoundBooks from './FoundBooks.vue';
 import { saveBooks } from '@/service/asyncStorage';
 
 export default {
-    name: "SearchPlanner",
-    components: { Search, FoundBooks },
-    data() {
-        return {
-            searchedBooks: [],
-            selectedBooks: []
-        };
+  name: 'SearchPlanner',
+  components: { Search, FoundBooks },
+  data() {
+    return {
+      searchedBooks: [],
+      selectedBooks: [],
+    };
+  },
+  methods: {
+    addSearched(bookData) {
+      this.searchedBooks = bookData.length ? bookData : [];
     },
-
-    methods: {
-        addSearched(bookData) {
-            if (this.searchedBooks.length !== 0) {
-                this.searchedBooks = [];
-            }
-
-            this.searchedBooks = bookData;
-        },
-
-        selectionUpdate(selected) {
-            this.selectedBooks = selected;
-        },
-
-        async saveSelectedBooks(valor) {
-            if (valor) {
-                try {
-                    await saveBooks(this.selectedBooks);
-                    alert("Livros salvos com sucesso!");
-                } catch (error) {
-                    console.error("Erro ao salvar os livros:", error);
-                }
-            }
-        }
-    }
+    selectionUpdate(selected) {
+      this.selectedBooks = selected;
+    },
+    async saveSelectedBooks() {
+      if (this.selectedBooks.length === 0) {
+        alert('Nenhum livro selecionado para salvar!');
+        return;
+      }
+      try {
+        await saveBooks(this.selectedBooks);
+        alert('Livros salvos com sucesso!');
+      } catch (error) {
+        console.error('Erro ao salvar os livros:', error);
+      }
+    },
+  },
 };
 </script>
-
-<style></style>

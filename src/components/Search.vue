@@ -11,7 +11,12 @@
               <v-radio label="Livro" value="book"></v-radio>
               <v-radio label="Autor/a" value="author"></v-radio>
             </v-radio-group>
-            <v-text-field v-model="inputText" label="Digite sua pesquisa" outlined clearable></v-text-field>
+            <v-text-field
+              v-model="inputText"
+              label="Digite sua pesquisa"
+              outlined
+              clearable
+            ></v-text-field>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -30,54 +35,44 @@
 import { searchBook, searchAuthor } from '@/service/searchBook';
 
 export default {
-  name: "SearchComp",
+  name: 'SearchComp',
   data() {
     return {
-      inputText: "",
-      selectedOption: "select",
-      valor: false
+      inputText: '',
+      selectedOption: 'book',
     };
   },
   computed: {
     adaptativeText() {
       switch (this.selectedOption) {
-        case "book":
-          return "Digite o nome do livro:";
-        case "author":
-          return "Digite o nome do autor/a:";
-        case "select":
-          return "Selecione uma opção";
+        case 'book':
+          return 'Digite o nome do livro:';
+        case 'author':
+          return 'Digite o nome do autor/a:';
         default:
-          return "Selecione uma opção";
+          return 'Selecione uma opção';
       }
-    }
+    },
   },
   methods: {
     async search() {
-      if (this.inputText.trim() === "") return;
+      if (this.inputText.trim() === '') return;
 
-      if (this.selectedOption === "book") {
-        try {
-          const bookData = await searchBook(this.inputText);
-          this.$emit("book-searched", bookData);
-        } catch (error) {
-          console.error("Erro ao buscar o livro:", error);
-        }
-      } else if (this.selectedOption === "author") {
-        try {
-          const bookData = await searchAuthor(this.inputText);
-          this.$emit("book-searched", bookData);
-        } catch (error) {
-          console.error("Erro ao buscar o autor/a:", error);
-        }
+      try {
+        const bookData =
+          this.selectedOption === 'book'
+            ? await searchBook(this.inputText)
+            : await searchAuthor(this.inputText);
+
+        this.$emit('book-searched', bookData);
+      } catch (error) {
+        console.error('Erro na busca:', error);
       }
     },
-
     emitSave() {
-      this.valor = true;
-      this.$emit("select", this.valor);
-    }
-  }
+      this.$emit('save-selected');
+    },
+  },
 };
 </script>
 

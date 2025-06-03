@@ -5,66 +5,87 @@
         <h2>Meu plano de leituras</h2>
       </v-col>
     </v-row>
-    <div v-if="books.length > 0">
-      <v-row>
-        <v-col v-for="(book, index) in books" :key="book.id" cols="12" sm="6" md="4">
-          <v-card class="ma-2 pa-2">
-            
-            <v-card-title>{{ book.title }}</v-card-title>
-            <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
-            
-            <v-card-text>
-              <p>{{ book.publisher }}</p>
-              <p>{{ book.categories }}</p>
-              <p>{{ book.pages }}</p>
-              <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
-            </v-card-text>
-            
-            <v-card-actions>
-              <v-btn color="error" @click="removeBook(index)">Remover</v-btn>
-              <v-btn color="success" @click="finishBook(index)">Concluído</v-btn>
-            </v-card-actions>
-          
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
-    <div v-else>
-      <v-row justify="center">
-        <v-col cols="12" class="text-center">
-          <p>Nenhuma leitura foi planejada.</p>
-        </v-col>
-      </v-row>
-    </div>
 
-    <v-row justify="center" class="title-message" v-if="finishedBooks.length > 0">
-      <v-col cols="12" class="text-center">
-        <h2>Leituras concluídas</h2>
+    <v-row justify="center" class="mb-4">
+      <v-col cols="auto">
+        <v-btn :class="tab === 'planned' ? 'active' : 'inactive'" @click="tab = 'planned'">
+          Planejadas
+        </v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn :class="tab === 'finished' ? 'active' : 'inactive'" @click="tab = 'finished'">
+          Concluídas
+        </v-btn>
       </v-col>
     </v-row>
 
-    <div>
-      <v-row>
-        <v-col v-for="(book, index) in finishedBooks" :key="book.id" cols="12" sm="6" md="4">
-          <v-card class="ma-2 pa-2">
-            
-            <v-card-title>{{ book.title }}</v-card-title>
-            <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
-            
-            <v-card-text>
-              <p>{{ book.publisher }}</p>
-              <p>{{ book.categories }}</p>
-              <p>{{ book.pages }}</p>
-              <v-img :src="book.image" :alt="book.title" class="book-thumbnail" contain></v-img>
-            </v-card-text>
+    <div v-if="tab === 'planned'">
+      <div v-if="books.length > 0">
+        <v-row>
+          <v-col v-for="(book, index) in books" :key="book.id" cols="12" sm="6" md="4">
+            <v-card class="ma-2 pa-2">
 
-            <v-card-actions>
-              <v-btn color="primary" @click="comeback(index)">Voltar</v-btn>
-            </v-card-actions>
-          
-          </v-card>
-        </v-col>
-      </v-row>
+              <v-card-title>{{ book.title }}</v-card-title>
+              <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+
+              <v-card-text>
+                <p>{{ book.publisher }}</p>
+                <p>{{ book.categories }}</p>
+                <p>{{ book.pages }}</p>
+                <v-img :src="book.image" :alt="book.title" class="book-thumbnail" height="200" contain></v-img>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-btn color="error" @click="removeBook(index)">Remover</v-btn>
+                <v-btn color="success" @click="finishBook(index)">Concluído</v-btn>
+              </v-card-actions>
+
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+
+      <div v-else>
+        <v-row justify="center">
+          <v-col cols="12" class="text-center">
+            <p>Nenhuma leitura foi planejada.</p>
+          </v-col>
+        </v-row>
+      </div>
+    </div>
+
+    <div v-if="tab === 'finished'">
+      <div v-if="finishedBooks.length > 0">
+        <v-row>
+          <v-col v-for="(book, index) in finishedBooks" :key="book.id" cols="12" sm="6" md="4">
+            <v-card class="ma-2 pa-2">
+
+              <v-card-title>{{ book.title }}</v-card-title>
+              <v-card-subtitle>{{ book.authors }}</v-card-subtitle>
+
+              <v-card-text>
+                <p>{{ book.publisher }}</p>
+                <p>{{ book.categories }}</p>
+                <p>{{ book.pages }}</p>
+                <v-img :src="book.image" :alt="book.title" class="book-thumbnail" contain></v-img>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-btn color="primary" @click="comeback(index)">Voltar</v-btn>
+              </v-card-actions>
+
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+
+      <div v-else>
+        <v-row justify="center">
+          <v-col cols="12" class="text-center">
+            <p>Nenhuma leitura foi concluída.</p>
+          </v-col>
+        </v-row>
+      </div>
     </div>
   </v-container>
 </template>
@@ -78,6 +99,7 @@ export default {
   data() {
 
     return {
+      tab: "planned",
       books: [],
       finishedBooks: []
     };
@@ -114,7 +136,7 @@ export default {
       await saveBooks(this.books);
     }
   },
-  
+
   mounted() {
     this.fetchBooks();
   }
@@ -122,6 +144,20 @@ export default {
 </script>
 
 <style scoped>
+.active {
+  background-color: #352F44 !important;
+  color: white !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.inactive {
+  background-color: #DBD8E3 !important;
+  color: #352F44 !important;
+  box-shadow: none;
+  transition: 0.3s;
+}
+
 .v-card-text {
   padding: 10px;
 }
@@ -135,5 +171,4 @@ export default {
   margin-left: 10px;
   padding: 20px;
 }
-
 </style>
