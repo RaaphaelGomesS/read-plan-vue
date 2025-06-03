@@ -44,7 +44,7 @@ export default {
         async handleLogin() {
             try {
                 const response = await login(this.email, this.password);
-                const token = response.data.token;
+                const token = response.token;
                 console.log(token);
                 localStorage.setItem('token', token);
                 this.$router.push('/');

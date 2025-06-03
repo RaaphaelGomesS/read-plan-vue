@@ -12,6 +12,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+/*
 api.interceptors.response.use(
   response => response,
   error => {
@@ -22,6 +23,7 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 )
+  */
 
 export async function login(email, password) {
   const response = await api.post("/login", { email, password });
